@@ -30,6 +30,8 @@ streamlit run app.py
 
 The app opens at `http://localhost:8501`.
 
+Alternatively, access the app via the link: [https://blockigs-and-extremes-de.streamlit.app/](https://blockigs-and-extremes-de.streamlit.app/)
+
 ## Controls
 
 | Control | Description |
