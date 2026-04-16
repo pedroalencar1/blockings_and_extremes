@@ -77,7 +77,7 @@ def plot_event_block2(event_df, block_df, plot_class = False, area_threshold=0.2
  
 	return fig
 
-def get_frac_block_monthly(path_to_folder, file_extreme):
+def get_frac_block_monthly(path_to_folder, file_extreme, threshold=None):
     
     path_extreme = os.path.join(path_to_folder, file_extreme)
     # load dataset
@@ -89,11 +89,14 @@ def get_frac_block_monthly(path_to_folder, file_extreme):
     var_name = list(ds.keys())[0]
     # Apply mask and compute monthly statistics
     event = ds[var_name].values  # shape: (time, lat, lon)
-    
-    if DICT_THRESHOLD_MONTH[file_extreme][1] == 'bottom':
-        event_masked = (event > DICT_THRESHOLD_MONTH[file_extreme][0])*event
+
+    direction = DICT_THRESHOLD_MONTH[file_extreme][1]
+    effective_threshold = threshold if threshold is not None else DICT_THRESHOLD_MONTH[file_extreme][0]
+
+    if direction == 'bottom':
+        event_masked = (event > effective_threshold)*event
     else:
-        event_masked = (event < DICT_THRESHOLD_MONTH[file_extreme][0])*event
+        event_masked = (event < effective_threshold)*event
         
     event_masked[abs(event_masked) > 0] = 1
 

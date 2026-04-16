@@ -102,7 +102,7 @@ with plot_col:
 	else:
 		df_blocking = series_blocking_month
   
-		df_extreme = get_frac_block_monthly(path_to_month, DICT_INDEX_FILE_MONTH[selected_index])
+		df_extreme = get_frac_block_monthly(path_to_month, DICT_INDEX_FILE_MONTH[selected_index], threshold=index_threshold)
 		df_extreme['day'] = 1  # add dummy day for plotting purposes (monthly data)
 		df_extreme['time'] = pd.to_datetime(df_extreme[['year', 'month', 'day']])	
   
@@ -134,7 +134,7 @@ with ctrl_col: # add metrics from confusion matrix
         dict_metrics = get_metrics_cm(df_extreme, df_blocking, affected_area_threshold)
     else:        
         df_blocking = series_blocking_month
-        df_extreme = get_frac_block_monthly(path_to_month, selected_index)
+        df_extreme = get_frac_block_monthly(path_to_month, DICT_INDEX_FILE_MONTH[selected_index], threshold=index_threshold)
         df_extreme['day'] = 1  # add dummy day for plotting purposes (monthly data)
         df_extreme['time'] = pd.to_datetime(df_extreme[['year', 'month', 'day']])	
         
