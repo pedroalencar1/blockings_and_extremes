@@ -35,7 +35,7 @@ def plot_event_block2(event_df, block_df, plot_class = False, area_threshold=0.2
 			name= f'Event covers > {area_threshold*100:.0f}% of Germany',
 			marker_color='black',
 			marker_line=dict(width=0, color='black'),
-			opacity=0.3,
+			opacity=0.7,
 			yaxis='y1'
 		))
 	else:

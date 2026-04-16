@@ -24,7 +24,7 @@ from pyproj import Transformer
 import os
 import pickle
 
-from global_vars import DICT_THRESHOLD_MONTH, LIST_WEEK
+from global_vars import *# DICT_THRESHOLD_MONTH, LIST_WEEK
 
 from functions import plot_event_block2, get_frac_block_monthly, get_metrics_cm
 
@@ -52,16 +52,16 @@ with ctrl_col:
         options=["Monthly", "Weekly"],
     )
 
-    index_options = LIST_WEEK if selected_period == "Weekly" else list(DICT_THRESHOLD_MONTH.keys())
+    index_options = DICT_INDEX_FILE_WEEK.keys() if selected_period == "Weekly" else DICT_INDEX_FILE_MONTH.keys()
     selected_index = st.selectbox(
         "Climate index",
         options=index_options,
     )
 
     if selected_period == "Monthly":
-        default_threshold = DICT_THRESHOLD_MONTH[selected_index][0]
+        default_threshold = DICT_THRESHOLD_MONTH[DICT_INDEX_FILE_MONTH[selected_index]][0]
         index_threshold = st.number_input(
-            f"Index threshold (type: {DICT_THRESHOLD_MONTH[selected_index][1]})",
+            f"Index threshold (type: {DICT_THRESHOLD_MONTH[DICT_INDEX_FILE_MONTH[selected_index]][1]})",
             value=float(default_threshold),
         )
 
@@ -80,7 +80,7 @@ with plot_col:
 	if selected_period == "Weekly":
 		df_blocking = series_blocking_week
   
-		df_extreme = dict_week_stats[selected_index]
+		df_extreme = dict_week_stats[DICT_INDEX_FILE_WEEK[selected_index]]
   
 		df_extreme_filter = df_extreme.copy()
 		if filter_months:
@@ -102,7 +102,7 @@ with plot_col:
 	else:
 		df_blocking = series_blocking_month
   
-		df_extreme = get_frac_block_monthly(path_to_month, selected_index)
+		df_extreme = get_frac_block_monthly(path_to_month, DICT_INDEX_FILE_MONTH[selected_index])
 		df_extreme['day'] = 1  # add dummy day for plotting purposes (monthly data)
 		df_extreme['time'] = pd.to_datetime(df_extreme[['year', 'month', 'day']])	
   
@@ -129,7 +129,7 @@ with plot_col:
 with ctrl_col: # add metrics from confusion matrix 
     if selected_period == "Weekly":
         df_blocking = series_blocking_week
-        df_extreme = dict_week_stats[selected_index]
+        df_extreme = dict_week_stats[DICT_INDEX_FILE_WEEK[selected_index]]
         
         dict_metrics = get_metrics_cm(df_extreme, df_blocking, affected_area_threshold)
     else:        
